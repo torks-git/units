@@ -1,0 +1,82 @@
+html body{
+	height: 100%;
+	margin: 0px;
+	min-width: 1024px;
+	min-height: 768px;
+}
+
+ul {
+	list-style-type: none;
+	margin: 1em;
+	margin-top: 0.5em;
+	padding-left: 5px;
+}
+
+table {
+	border-spacing: 2px;
+	border: 2px solid black;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+thead {
+	border: 2px solid black;
+}
+
+thead tr {
+	background-color: #9E9E9E;
+}
+
+th {
+	border: 1.5px #e5e5e5 solid;
+	border-color: rgba(0,0,0,0.15);
+}
+
+td {
+	text-align: center;
+	max-width: 400px;
+	border: 1.5px #e5e5e5 solid;
+	border-color: rgba(0,0,0,0.15);
+}
+
+p {
+	margin: 0px;
+	white-space: pre-line;
+}
+
+.Fire {
+	background-color: #dd7e6b;
+}
+.Earth {
+	background-color: #93c47d;
+}
+.Water {
+	background-color: #87b3ff;
+}
+.Null {
+	background-color: #8e7cc3;
+}
+
+.search_overlay {
+	margin-top: 50px;
+	right: 0px;
+	float: right;
+	position: fixed;
+	background-color: lightgrey;
+	border: 1px solid black;
+	margin-right: 2.5px;
+    padding-top: 0px;
+}
+
+a {
+	color: black;
+}
+
+.search_overlay div {
+    padding-top: 0.5em;
+	float: left;
+}
+
+.search_overlay b {
+	margin-left: 1em;
+}
