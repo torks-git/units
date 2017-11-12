@@ -60,12 +60,12 @@ p {
 .search_overlay {
 	margin-top: 50px;
 	right: 0px;
-	float: right;
 	position: fixed;
 	background-color: lightgrey;
 	border: 1px solid black;
 	margin-right: 2.5px;
-    padding-top: 0px;
+	max-height: 90%;
+    overflow-y: auto;
 }
 
 a {
@@ -79,4 +79,10 @@ a {
 
 .search_overlay b {
 	margin-left: 1em;
+}
+
+.bg_div {
+	height : 38px;
+	background-repeat: no-repeat;
+    background-position: center;
 }
