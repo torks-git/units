@@ -82,9 +82,9 @@
 							<td>{{::unit.attack}}</td>
 							<td>{{::unit.hp}}</td>
 							<td>{{::abilities[unit.ability.ind+1]}} {{::unit.ability.level}}</td>
-							<td><div ng-if="::unit.skills[0].chance">{{::unit.skills[0].chance}}%<br><image ng-src="icons/{{::unit.skills[0].type}}-icon.png"/></div></td>
+							<td><div ng-if="::unit.skills[0].chance">{{::unit.skills[0].chance}}%<br><img ng-src="icons/{{::unit.skills[0].type}}-icon.png"></div></td>
 							<td><p>{{::unit.skills[0].text}}</p></td>
-							<td><div ng-if="::unit.skills[1].chance">{{::unit.skills[1].chance}}%<br><image ng-src="icons/{{::unit.skills[1].type}}-icon.png"/></div></td>
+							<td><div ng-if="::unit.skills[1].chance">{{::unit.skills[1].chance}}%<br><img ng-src="icons/{{::unit.skills[1].type}}-icon.png"></div></td>
 							<td><p>{{::unit.skills[1].text}}</p></td>
 						</tr>
 					</tbody>
