@@ -65,7 +65,7 @@ p {
 	border: 1px solid black;
 	margin-right: 2.5px;
 	max-height: 90%;
-    overflow-y: auto;
+	overflow-y: auto;
 }
 
 a {
@@ -73,7 +73,7 @@ a {
 }
 
 .search_overlay div {
-    padding-top: 0.5em;
+	padding-top: 0.5em;
 	float: left;
 }
 
@@ -84,5 +84,5 @@ a {
 .bg_div {
 	height : 38px;
 	background-repeat: no-repeat;
-    background-position: center;
+	background-position: center;
 }
