@@ -25,7 +25,7 @@
 						</ul>
 					</div>
 					<div>
-						<b>Skill effect</b>
+						<b>Passive Skill effect</b>
 						<ul>
 							<li ng-repeat="tag in ::tags">
 								<input type="checkbox" ng-model="tag.active">{{::tag.value}}
@@ -37,6 +37,9 @@
 						<ul>
 							<li ng-repeat="rare in ::rarity">
 								<input type="checkbox" ng-model="rare.active">{{::rare.value}}
+							</li>
+							<li>
+								<input type="checkbox" ng-model="platinum">Platinum
 							</li>
 						</ul>
 						<b>Type</b>
