@@ -9,6 +9,7 @@ app.controller('myController',function($scope,$document) {
 	$scope.platinum = true;
 	$scope.elements = ["Earth","Fire","Water","Null"];
 	$scope.types = ["Flurry","Slice","Pound"];
+	$scope.skill_types = ["Support","Rush","Multi","Multi&Rush"];
 	$scope.result = [];
 	$scope.overlay = true;
 	$scope.ability = 0;
@@ -20,6 +21,7 @@ app.controller('myController',function($scope,$document) {
 	var active_rarity = [];
 	var active_types = [];
 	var active_elements = [];
+	var active_skill_types = [];
 
 	$scope.myinit = function() {
 		var tmp;
@@ -30,13 +32,13 @@ app.controller('myController',function($scope,$document) {
 			if (typeof aoi_data.abilities !== "undefined") $scope.abilities = $scope.abilities.concat(aoi_data.abilities);
 		}
 
-		var scopes = [$scope.tags, $scope.rarity, $scope.elements, $scope.types];
+		var scopes = [$scope.tags, $scope.skill_types, $scope.rarity, $scope.elements, $scope.types];
 		for (var j=0; j<scopes.length; j++) {
 			for (var i=0; i<scopes[j].length; i++) {
 				tmp = scopes[j][i];
 				scopes[j][i] = {
 					value : tmp,
-					active : (j > 1) ? true : false
+					active : (j > 2) ? true : false
 				};
 			}
 		}
@@ -59,13 +61,15 @@ app.controller('myController',function($scope,$document) {
 		active_rarity = [];
 		active_types = [];
 		active_elements = [];
+		active_skill_types = [];
 		$scope.result = [];
 
 		var filters = [
-			{ref: $scope.tags, act: active_tags}, 
-			{ref: $scope.rarity, act: active_rarity}, 
-			{ref: $scope.elements, act: active_elements}, 
-			{ref: $scope.types, act: active_types}
+			{ref: $scope.tags, act: active_tags},
+			{ref: $scope.rarity, act: active_rarity},
+			{ref: $scope.elements, act: active_elements},
+			{ref: $scope.types, act: active_types},
+			{ref: $scope.skill_types, act: active_skill_types}
 		];
 
 		for (var j=0; j<filters.length; j++) {
@@ -74,6 +78,10 @@ app.controller('myController',function($scope,$document) {
 					filters[j].act.push( j > 0 ? filters[j].ref[i].value : i);
 				}
 			}
+		}
+		
+		for (var j=0; j<active_skill_types.length; j++) {
+			active_skill_types[j] = active_skill_types[j].replace("&","");
 		}
 
 		for (var i=0; i<$scope.units.length; i++) {
@@ -86,6 +94,12 @@ app.controller('myController',function($scope,$document) {
 	function check_unit(unit) {
 		for (var j=0; j<active_tags.length; j++) {
 			if ( (unit.skills[0].tags.indexOf(active_tags[j]) === -1) && (unit.skills[1].tags.indexOf(active_tags[j]) === -1) ) {
+				return false;
+			}
+		}
+		
+		for (var j=0; j<active_skill_types.length; j++) {
+			if ( (unit.skills[0].type !== active_skill_types[j]) && (unit.skills[1].type !== active_skill_types[j]) ) {
 				return false;
 			}
 		}

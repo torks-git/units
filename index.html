@@ -31,6 +31,12 @@
 								<input type="checkbox" ng-model="tag.active">{{::tag.value}}
 							</li>
 						</ul>
+						<b>Active Skill type</b>
+						<ul>
+							<li ng-repeat="type in ::skill_types">
+								<input type="checkbox" ng-model="type.active">{{::type.value}}
+							</li>
+						</ul>
 					</div>
 					<div style="padding-bottom: 30px;">
 						<b>Rarity</b>
