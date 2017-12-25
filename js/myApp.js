@@ -14,6 +14,20 @@ app.controller('myController',function($scope,$document) {
 	$scope.overlay = true;
 	$scope.ability = 0;
 
+	$scope.headers = [
+		{name: "Name",sort: "name"},
+		{name: "Rarity",sort: "rarity"},
+		{name: "Element",sort: "element"},
+		{name: "Type",sort: "type"},
+		{name: "Attack",sort: "attack"},
+		{name: "HP",sort: "hp"},
+		{name: "Ability",sort: "ability.ind"},
+		{name: ""},
+		{name: "Skill 1"},
+		{name: ""},
+		{name: "Skill 2"}
+	];
+
 	$scope.sortType = 'element';
 	$scope.sortReverse = false;
 

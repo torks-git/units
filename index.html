@@ -45,7 +45,7 @@
 								<input type="checkbox" ng-model="rare.active">{{::rare.value}}
 							</li>
 							<li>
-								<input type="checkbox" ng-model="platinum">Platinum
+								<input type="checkbox" ng-model="platinum">P7
 							</li>
 						</ul>
 						<b>Type</b>
@@ -69,17 +69,15 @@
 				<table>
 					<thead>
 						<tr>
-							<th ng-click="sortType === 'name' ? sortReverse = !sortReverse : sortType = 'name';">Name</th>
-							<th ng-click="sortType === 'rarity' ? sortReverse = !sortReverse : sortType = 'rarity';">Rarity</th>
-							<th ng-click="sortType === 'element' ? sortReverse = !sortReverse : sortType = 'element';">Element</th>
-							<th ng-click="sortType === 'type' ? sortReverse = !sortReverse : sortType = 'type';">Type</th>
-							<th ng-click="sortType === 'attack' ? sortReverse = !sortReverse : sortType = 'attack';">Attack</th>
-							<th ng-click="sortType === 'hp' ? sortReverse = !sortReverse : sortType = 'hp';">HP</th>
-							<th ng-click="sortType === 'ability' ? sortReverse = !sortReverse : sortType = 'ability';">Ability</th>
-							<th></th>
-							<th>Skill 1</th>
-							<th></th>
-							<th>Skill 2</th>
+							<th ng-repeat="header in ::headers">
+								<div style="display: inline-flex;">
+									<span style="float: left;">{{::header.name}}</span>
+									<div ng-if="::header.sort" style="float: left; padding-left: 4px;">
+										<span class="chevron up" ng-click="$parent.$parent.sortType = header.sort; $parent.$parent.sortReverse = false;"></span>
+										<span class="chevron down" ng-click="$parent.$parent.sortType = header.sort; $parent.$parent.sortReverse = true;"></span>
+									</div>
+								</div>
+							</th>
 						</tr>
 					</thead>
 					<tbody>
