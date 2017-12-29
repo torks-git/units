@@ -5,8 +5,7 @@ app.controller('myController',function($scope,$document) {
 	$scope.units = [];
 	$scope.tags = [];
 	$scope.abilities = ["*"];
-	$scope.rarity = [1,2,3,4,5,6,7];
-	$scope.platinum = true;
+	$scope.rarity = [1,2,3,4,5,6,7,"P7"];
 	$scope.elements = ["Earth","Fire","Water","Null"];
 	$scope.types = ["Flurry","Slice","Pound"];
 	$scope.skill_types = ["Support","Rush","Multi","Multi&Rush"];
@@ -58,6 +57,11 @@ app.controller('myController',function($scope,$document) {
 		}
 
 		$scope.rarity[$scope.rarity.length-1].active = true;
+		$scope.rarity[$scope.rarity.length-2].active = true;
+
+		for (var j=0; j<$scope.units.length; j++) {
+			if (is_platinum($scope.units[j])) $scope.units[j].rarity = "P" + $scope.units[j].rarity;
+		}
 
 		$scope.search();
 
@@ -121,9 +125,6 @@ app.controller('myController',function($scope,$document) {
 		if (($scope.ability !== 0) && (unit.ability.ind+1 !== $scope.ability)) return false;
 		if (active_types.indexOf(unit.type) === -1) return false;
 		if (active_elements.indexOf(unit.element) === -1) return false;
-
-		if ((!$scope.platinum) && (is_platinum(unit))) return false;
-		if ($scope.platinum && (active_rarity.length === 0)) return is_platinum(unit);
 		if (active_rarity.indexOf(unit.rarity) === -1) return false;
 
 		return true;
