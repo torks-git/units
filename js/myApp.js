@@ -5,7 +5,7 @@ app.controller('myController',function($scope,$document) {
 	$scope.units = [];
 	$scope.tags = [];
 	$scope.abilities = ["*"];
-	$scope.rarity = [1,2,3,4,5,6,7,"P7"];
+	$scope.rarity = [1,2,3,4,5,6,7];
 	$scope.elements = ["Earth","Fire","Water","Null"];
 	$scope.types = ["Flurry","Slice","Pound"];
 	$scope.skill_types = ["Support","Rush","Multi","Multi&Rush"];
@@ -14,13 +14,13 @@ app.controller('myController',function($scope,$document) {
 	$scope.ability = 0;
 
 	$scope.headers = [
-		{name: "Name",sort: "name"},
-		{name: "Rarity",sort: "rarity"},
-		{name: "Element",sort: "element"},
-		{name: "Type",sort: "type"},
-		{name: "Attack",sort: "attack"},
-		{name: "HP",sort: "hp"},
-		{name: "Ability",sort: "ability.ind"},
+		{name: "Name", sort: "name"},
+		{name: "Rarity", sort: "rarity"},
+		{name: "Element", sort: "element"},
+		{name: "Type", sort: "type"},
+		{name: "Attack", sort: "attack"},
+		{name: "HP", sort: "hp"},
+		{name: "Ability", sort: "ability.ind"},
 		{name: ""},
 		{name: "Skill 1"},
 		{name: ""},
@@ -50,18 +50,19 @@ app.controller('myController',function($scope,$document) {
 			for (var i=0; i<scopes[j].length; i++) {
 				tmp = scopes[j][i];
 				scopes[j][i] = {
-					value : tmp,
-					active : (j > 2) ? true : false
+					value: tmp,
+					active: (j > 2) ? true : false
 				};
 			}
 		}
 
 		$scope.rarity[$scope.rarity.length-1].active = true;
-		$scope.rarity[$scope.rarity.length-2].active = true;
 
+		//comment this to disable P7 rarity
 		for (var j=0; j<$scope.units.length; j++) {
 			if (is_platinum($scope.units[j])) $scope.units[j].rarity = "P" + $scope.units[j].rarity;
 		}
+		$scope.rarity.push({value: "P7", active: true});
 
 		$scope.search();
 
