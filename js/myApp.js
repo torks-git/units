@@ -12,6 +12,7 @@ app.controller('myController',function($scope,$document) {
 	$scope.result = [];
 	$scope.overlay = true;
 	$scope.ability = 0;
+	$scope.date_ = null;
 
 	$scope.headers = [
 		{name: "Name", sort: "name"},
@@ -35,6 +36,11 @@ app.controller('myController',function($scope,$document) {
 	var active_types = [];
 	var active_elements = [];
 	var active_skill_types = [];
+	
+	function pad (str, max) {
+		str = str.toString();
+		return str.length < max ? pad("0" + str, max) : str;
+	}
 
 	$scope.myinit = function() {
 		var tmp;
@@ -44,14 +50,19 @@ app.controller('myController',function($scope,$document) {
 			if (typeof aoi_data.tags !== "undefined") $scope.tags = aoi_data.tags;
 			if (typeof aoi_data.abilities !== "undefined") $scope.abilities = $scope.abilities.concat(aoi_data.abilities);
 		}
+		if (typeof date_ !== "undefined") {
+			tmp = new Date(date_);
+			$scope.date_= "UTC  " + pad(tmp.getUTCHours(),2) + ":" + pad(tmp.getUTCMinutes(),2) + " - " + tmp.getUTCDate() + "/"+ tmp.getUTCMonth()+1 + "/"+ tmp.getUTCFullYear();
+		}
 
-		var scopes = [$scope.tags, $scope.skill_types, $scope.rarity, $scope.elements, $scope.types];
+		var scopes = [$scope.abilities, $scope.tags, $scope.skill_types, $scope.rarity, $scope.elements, $scope.types];
 		for (var j=0; j<scopes.length; j++) {
 			for (var i=0; i<scopes[j].length; i++) {
 				tmp = scopes[j][i];
 				scopes[j][i] = {
 					value: tmp,
-					active: (j > 2) ? true : false
+					count: 0,
+					active: (j > 3) ? true : false
 				};
 			}
 		}
@@ -62,7 +73,7 @@ app.controller('myController',function($scope,$document) {
 		for (var j=0; j<$scope.units.length; j++) {
 			if (is_platinum($scope.units[j])) $scope.units[j].rarity = "P" + $scope.units[j].rarity;
 		}
-		$scope.rarity.push({value: "P7", active: true});
+		$scope.rarity.push({value: "P7", count: 0, active: true});
 
 		$scope.search();
 
@@ -93,12 +104,16 @@ app.controller('myController',function($scope,$document) {
 
 		for (var j=0; j<filters.length; j++) {
 			for (var i=0; i<filters[j].ref.length; i++) {
+				filters[j].ref[i].count = 0;
 				if (filters[j].ref[i].active) {
 					filters[j].act.push( j > 0 ? filters[j].ref[i].value : i);
 				}
 			}
 		}
-		
+		for (var j=0; j<$scope.abilities.length; j++) {
+			$scope.abilities[j].count = 0;
+		}
+
 		for (var j=0; j<active_skill_types.length; j++) {
 			active_skill_types[j] = active_skill_types[j].replace("&","");
 		}
@@ -108,6 +123,40 @@ app.controller('myController',function($scope,$document) {
 				$scope.result.push($scope.units[i]);
 			}
 		}
+
+		for (var i=0; i<$scope.result.length; i++) {
+			for (var j=0; j<$scope.result[i].skills.length; j++) {
+				for (var k=0; k<$scope.result[i].skills[j].tags.length; k++) {
+					$scope.tags[$scope.result[i].skills[j].tags[k]].count++;
+				}
+				for (var k=0; k<$scope.skill_types.length; k++) {
+					if ($scope.skill_types[k].value.replace("&","") === $scope.result[i].skills[j].type) $scope.skill_types[k].count++;
+				}
+			}
+			
+
+			for (var k=0; k<$scope.rarity.length; k++) {
+				if ($scope.rarity[k].value === $scope.result[i].rarity) $scope.rarity[k].count++;
+			}
+			for (var k=0; k<$scope.elements.length; k++) {
+				if ($scope.elements[k].value === $scope.result[i].element) $scope.elements[k].count++;
+			}
+			for (var k=0; k<$scope.types.length; k++) {
+				if ($scope.types[k].value === $scope.result[i].type) $scope.types[k].count++;
+			}
+			$scope.abilities[$scope.result[i].ability.ind+1].count++;
+		}
+		$scope.abilities[0].count=$scope.result.length;
+
+		for (var k=0; k<$scope.rarity.length; k++) {
+			if (!$scope.rarity[k].active) $scope.rarity[k].count = '-';
+		}
+		for (var k=0; k<$scope.elements.length; k++) {
+			if (!$scope.elements[k].active) $scope.elements[k].count = '-';
+		}
+		for (var k=0; k<$scope.types.length; k++) {
+			if (!$scope.types[k].active) $scope.types[k].count = '-';
+		}
 	};
 
 	function check_unit(unit) {
@@ -116,7 +165,7 @@ app.controller('myController',function($scope,$document) {
 				return false;
 			}
 		}
-		
+
 		for (var j=0; j<active_skill_types.length; j++) {
 			if ( (unit.skills[0].type !== active_skill_types[j]) && (unit.skills[1].type !== active_skill_types[j]) ) {
 				return false;

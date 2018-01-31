@@ -19,47 +19,48 @@
 					<div>
 						<b>Ability</b>
 						<ul>
-							<li ng-repeat="ability_i in ::abilities">
-								<input type="radio" ng-model="$parent.ability" ng-value="::$index">{{::ability_i}}
+							<li ng-repeat="ability_i in ::abilities" ng-style="{'color' : ability_i.count ? 'black' : 'darkgrey' }">
+								<input type="radio" ng-model="$parent.ability" ng-value="::$index"><span>{{::ability_i.value}} ({{ability_i.count}})</span>
 							</li>
 						</ul>
 					</div>
 					<div>
 						<b>Passive Skill effect</b>
 						<ul>
-							<li ng-repeat="tag in ::tags">
-								<input type="checkbox" ng-model="tag.active">{{::tag.value}}
+							<li ng-repeat="tag in ::tags" ng-style="{'color' : tag.count ? 'black' : 'darkgrey' }">
+								<input type="checkbox" ng-model="tag.active"><span>{{::tag.value}} ({{tag.count}})</span>
 							</li>
 						</ul>
 						<b>Active Skill type</b>
 						<ul>
-							<li ng-repeat="type in ::skill_types">
-								<input type="checkbox" ng-model="type.active">{{::type.value}}
+							<li ng-repeat="type in ::skill_types" ng-style="{'color' : type.count ? 'black' : 'darkgrey' }">
+								<input type="checkbox" ng-model="type.active"><span>{{::type.value}} ({{type.count}})</span>
 							</li>
 						</ul>
 					</div>
 					<div style="padding-bottom: 30px;">
 						<b>Rarity</b>
 						<ul>
-							<li ng-repeat="rare in ::rarity">
-								<input type="checkbox" ng-model="rare.active">{{::rare.value}}
+							<li ng-repeat="rare in ::rarity" ng-style="{'color' : rare.count ? 'black' : 'darkgrey' }">
+								<input type="checkbox" ng-model="rare.active"><span>{{::rare.value}} ({{rare.count}})</span>
 							</li>
 						</ul>
 						<b>Type</b>
 						<ul>
-							<li ng-repeat="type in ::types">
-								<input type="checkbox" ng-model="type.active">{{::type.value}}
+							<li ng-repeat="type in ::types" ng-style="{'color' : type.count ? 'black' : 'darkgrey' }">
+								<input type="checkbox" ng-model="type.active"><span>{{::type.value}} ({{type.count}})</span>
 							</li>
 						</ul>
 						<b>Element</b>
 						<ul>
-							<li ng-repeat="element in ::elements">
-								<input type="checkbox" ng-model="element.active">{{::element.value}}
+							<li ng-repeat="element in ::elements" ng-style="{'color' : element.count ? 'black' : 'darkgrey' }">
+								<input type="checkbox" ng-model="element.active"><span>{{::element.value}} ({{element.count}})</span>
 							</li>
 						</ul>
 						<button type="button" ng-click="search()" style="left:1.5em; position:relative;">Search</button>
 					</div>
-					<b style="bottom:15px; right:-25px; position:absolute;">{{result.length}}/{{::units.length}}</b>
+					<b style="bottom:15px; right:-25px; position:absolute;">{{date_}}</b>
+					<b style="bottom:40px; right:-25px; position:absolute;">{{result.length}}/{{::units.length}}</b>
 				</div>
 			</div>
 			<div style="padding:10px;">
@@ -85,7 +86,7 @@
 							<td><div class="bg_div" ng-style="::{'background-image': 'url(icons/'+unit.type+'_icon.png)'}"></div></td>
 							<td>{{::unit.attack}}</td>
 							<td>{{::unit.hp}}</td>
-							<td>{{::abilities[unit.ability.ind+1]}} {{::unit.ability.level}}</td>
+							<td>{{::abilities[unit.ability.ind+1].value}} {{::unit.ability.level}}</td>
 							<td><div ng-if="::unit.skills[0].chance">{{::unit.skills[0].chance}}%<br><img ng-src="icons/{{::unit.skills[0].type}}-icon.png"></div></td>
 							<td><p>{{::unit.skills[0].text}}</p></td>
 							<td><div ng-if="::unit.skills[1].chance">{{::unit.skills[1].chance}}%<br><img ng-src="icons/{{::unit.skills[1].type}}-icon.png"></div></td>
