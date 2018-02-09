@@ -11,7 +11,7 @@
 	</head>
 	<body>
 		<div ng-app="myApp" ng-controller="myController" ng-init="myinit()">
-			<div class="search_overlay">
+			<div class="search_overlay" ng-style="{'opacity' : overlay ? 1 : 0.3 }">
 				<div style="padding-top: 0px; float:right;">
 					<button type="button" ng-click="overlay = !overlay">{{ overlay ? "&gt;&gt;&gt;" : "&lt;&lt;&lt;"}}</button>
 				</div>
