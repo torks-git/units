@@ -52,7 +52,7 @@ app.controller('myController',function($scope,$document) {
 		}
 		if (typeof date_ !== "undefined") {
 			tmp = new Date(date_);
-			$scope.date_= "UTC  " + pad(tmp.getUTCHours(),2) + ":" + pad(tmp.getUTCMinutes(),2) + " - " + tmp.getUTCDate() + "/"+ tmp.getUTCMonth()+1 + "/"+ tmp.getUTCFullYear();
+			$scope.date_= "UTC  " + pad(tmp.getUTCHours(),2) + ":" + pad(tmp.getUTCMinutes(),2) + " - " + pad(tmp.getUTCDate(),2) + "/"+ pad(tmp.getUTCMonth()+1,2) + "/"+ tmp.getUTCFullYear();
 		}
 
 		var scopes = [$scope.abilities, $scope.tags, $scope.skill_types, $scope.rarity, $scope.elements, $scope.types];
