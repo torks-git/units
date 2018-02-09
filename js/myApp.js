@@ -183,4 +183,10 @@ app.controller('myController',function($scope,$document) {
 	function is_platinum(unit) {
 		return ((unit.skills[1].type === "Unique") && (unit.name !== "Trivia"));
 	}
+	
+	$scope.hsort = function(header) {
+		if (typeof header.sort === "undefined") return;
+		$scope.sortReverse = $scope.sortType === header.sort ? !$scope.sortReverse : true;
+		$scope.sortType = header.sort;
+	};
 });
