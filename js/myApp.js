@@ -122,8 +122,6 @@ app.controller('myController',function($scope,$document) {
 		for (var j=0; j<active_skill_types.length; j++) {
 			active_skill_types[j] = active_skill_types[j].replace("&","");
 		}
-		
-		console.log(active_evolutions);
 
 		for (var i=0; i<$scope.units.length; i++) {
 			if(check_unit($scope.units[i])) {
