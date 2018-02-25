@@ -57,6 +57,12 @@
 								<input type="checkbox" ng-model="element.active"><span>{{::element.value}} ({{element.count}})</span>
 							</li>
 						</ul>
+						<b>Evolutions</b>
+						<ul>
+							<li ng-repeat="evo in ::evolutions" ng-style="{'color' : evo.count ? 'black' : 'darkgrey' }">
+								<input type="checkbox" ng-model="evo.active"><span>{{::evo.value}} ({{evo.count}})</span>
+							</li>
+						</ul>
 						<button type="button" ng-click="search()" style="left:1.5em; position:relative;">Search</button>
 					</div>
 					<b style="bottom:15px; right:-25px; position:absolute;">{{::date_}}</b>

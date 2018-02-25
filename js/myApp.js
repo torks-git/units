@@ -9,6 +9,7 @@ app.controller('myController',function($scope,$document) {
 	$scope.elements = ["Earth","Fire","Water","Null"];
 	$scope.types = ["Flurry","Slice","Pound"];
 	$scope.skill_types = ["Support","Rush","Multi","Multi&Rush"];
+	$scope.evolutions = [0,2,4];
 	$scope.result = [];
 	$scope.overlay = true;
 	$scope.ability = 0;
@@ -37,6 +38,7 @@ app.controller('myController',function($scope,$document) {
 	var active_types = [];
 	var active_elements = [];
 	var active_skill_types = [];
+	var active_evolutions = [];
 	
 	function pad (str, max) {
 		str = str.toString();
@@ -56,7 +58,7 @@ app.controller('myController',function($scope,$document) {
 			$scope.date_= "UTC  " + pad(tmp.getUTCHours(),2) + ":" + pad(tmp.getUTCMinutes(),2) + " - " + pad(tmp.getUTCDate(),2) + "/"+ pad(tmp.getUTCMonth()+1,2) + "/"+ tmp.getUTCFullYear();
 		}
 
-		var scopes = [$scope.abilities, $scope.tags, $scope.skill_types, $scope.rarity, $scope.elements, $scope.types];
+		var scopes = [$scope.abilities, $scope.tags, $scope.skill_types, $scope.rarity, $scope.elements, $scope.types, $scope.evolutions];
 		for (var j=0; j<scopes.length; j++) {
 			for (var i=0; i<scopes[j].length; i++) {
 				tmp = scopes[j][i];
@@ -93,6 +95,7 @@ app.controller('myController',function($scope,$document) {
 		active_types = [];
 		active_elements = [];
 		active_skill_types = [];
+		active_evolutions = [];
 		$scope.result = [];
 
 		var filters = [
@@ -100,7 +103,8 @@ app.controller('myController',function($scope,$document) {
 			{ref: $scope.rarity, act: active_rarity},
 			{ref: $scope.elements, act: active_elements},
 			{ref: $scope.types, act: active_types},
-			{ref: $scope.skill_types, act: active_skill_types}
+			{ref: $scope.skill_types, act: active_skill_types},
+			{ref: $scope.evolutions, act: active_evolutions}
 		];
 
 		for (var j=0; j<filters.length; j++) {
@@ -118,6 +122,8 @@ app.controller('myController',function($scope,$document) {
 		for (var j=0; j<active_skill_types.length; j++) {
 			active_skill_types[j] = active_skill_types[j].replace("&","");
 		}
+		
+		console.log(active_evolutions);
 
 		for (var i=0; i<$scope.units.length; i++) {
 			if(check_unit($scope.units[i])) {
@@ -145,6 +151,9 @@ app.controller('myController',function($scope,$document) {
 			for (var k=0; k<$scope.types.length; k++) {
 				if ($scope.types[k].value === $scope.result[i].type) $scope.types[k].count++;
 			}
+			for (var k=0; k<$scope.evolutions.length; k++) {
+				if ($scope.evolutions[k].value === $scope.result[i].evolutions) $scope.evolutions[k].count++;
+			}
 			$scope.abilities[$scope.result[i].ability.ind+1].count++;
 		}
 		$scope.abilities[0].count=$scope.result.length;
@@ -157,6 +166,9 @@ app.controller('myController',function($scope,$document) {
 		}
 		for (var k=0; k<$scope.types.length; k++) {
 			if (!$scope.types[k].active) $scope.types[k].count = '-';
+		}
+		for (var k=0; k<$scope.evolutions.length; k++) {
+			if (!$scope.evolutions[k].active) $scope.evolutions[k].count = '-';
 		}
 	};
 
@@ -177,6 +189,7 @@ app.controller('myController',function($scope,$document) {
 		if (active_types.indexOf(unit.type) === -1) return false;
 		if (active_elements.indexOf(unit.element) === -1) return false;
 		if (active_rarity.indexOf(unit.rarity) === -1) return false;
+		if (active_evolutions.indexOf(unit.evolutions) === -1) return false;
 
 		return true;
 	}
