@@ -13,7 +13,7 @@ app.controller('myController',function($scope,$document) {
 	$scope.result = [];
 	$scope.overlay = true;
 	$scope.ability = 0;
-	$scope.date_ = null;
+	$scope.dateString = null;
 
 	$scope.headers = [
 		{name: "Name", sort: "name"},
@@ -52,10 +52,10 @@ app.controller('myController',function($scope,$document) {
 			if (typeof aoi_data.units !== "undefined") $scope.units = aoi_data.units;
 			if (typeof aoi_data.tags !== "undefined") $scope.tags = aoi_data.tags;
 			if (typeof aoi_data.abilities !== "undefined") $scope.abilities = $scope.abilities.concat(aoi_data.abilities);
-		}
-		if (typeof date_ !== "undefined") {
-			tmp = new Date(date_);
-			$scope.date_= "UTC  " + pad(tmp.getUTCHours(),2) + ":" + pad(tmp.getUTCMinutes(),2) + " - " + pad(tmp.getUTCDate(),2) + "/"+ pad(tmp.getUTCMonth()+1,2) + "/"+ tmp.getUTCFullYear();
+			if (typeof aoi_data.timestamp !== "undefined") {
+				tmp = new Date(aoi_data.timestamp);
+				$scope.dateString = "UTC  " + pad(tmp.getUTCHours(),2) + ":" + pad(tmp.getUTCMinutes(),2) + " - " + pad(tmp.getUTCDate(),2) + "/" + pad(tmp.getUTCMonth()+1,2) + "/" + tmp.getUTCFullYear();
+			}
 		}
 
 		var scopes = [$scope.abilities, $scope.tags, $scope.skill_types, $scope.rarity, $scope.elements, $scope.types, $scope.evolutions];
