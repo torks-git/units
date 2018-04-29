@@ -75,7 +75,7 @@
 						<tr>
 							<th ng-repeat="header in ::headers">
 								<div style="display: inline-flex;">
-									<span style="float: left;" ng-click="hsort(header)">{{::header.name}}</span>
+									<span ng-style="::{'cursor' : header.sort ? 'pointer' : 'auto' }" ng-click="hsort(header)">{{::header.name}}</span>
 									<div ng-if="::header.sort" style="float: left; padding-left: 4px;">
 										<span class="chevron up" ng-click="csort(header.sort,false)"></span>
 										<span class="chevron down" ng-click="csort(header.sort,true)"></span>
