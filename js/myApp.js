@@ -139,7 +139,9 @@ app.controller('myController',function($scope,$document) {
 				}
 			}
 			
-
+			for (var j=0; j<$scope.result[i].ability.length; j++) {
+				$scope.abilities[$scope.result[i].ability[j].ind+1].count++;
+			}
 			for (var k=0; k<$scope.rarity.length; k++) {
 				if ($scope.rarity[k].value === $scope.result[i].rarity) $scope.rarity[k].count++;
 			}
@@ -152,7 +154,6 @@ app.controller('myController',function($scope,$document) {
 			for (var k=0; k<$scope.evolutions.length; k++) {
 				if ($scope.evolutions[k].value === $scope.result[i].evolutions) $scope.evolutions[k].count++;
 			}
-			$scope.abilities[$scope.result[i].ability.ind+1].count++;
 		}
 		$scope.abilities[0].count=$scope.result.length;
 
@@ -183,7 +184,17 @@ app.controller('myController',function($scope,$document) {
 			}
 		}
 
-		if (($scope.ability !== 0) && (unit.ability.ind+1 !== $scope.ability)) return false;
+		
+		if ($scope.ability !== 0) {
+			var f = false;
+			for (var j=0; j<unit.ability.length; j++) {
+				if (unit.ability[j].ind+1 === $scope.ability) {
+					f = true;
+				}
+			}
+			if (!f) return false;
+		}
+		
 		if (active_types.indexOf(unit.type) === -1) return false;
 		if (active_elements.indexOf(unit.element) === -1) return false;
 		if (active_rarity.indexOf(unit.rarity) === -1) return false;
