@@ -5,7 +5,7 @@ app.controller('myController',function($scope,$document) {
 	$scope.units = [];
 	$scope.tags = [];
 	$scope.abilities = ["*"];
-	$scope.rarity = [1,2,3,4,5,6,7];
+	$scope.rarity = [1,2,3,4,5,6,7,8];
 	$scope.elements = ["Earth","Fire","Water","Null"];
 	$scope.types = ["Flurry","Slice","Pound"];
 	$scope.skill_types = ["Support","Rush","Multi","Multi&Rush"];
@@ -71,6 +71,7 @@ app.controller('myController',function($scope,$document) {
 		}
 
 		$scope.rarity[$scope.rarity.length-1].active = true;
+		$scope.rarity[$scope.rarity.length-2].active = true;
 
 		//comment this to disable P7 rarity
 		for (var j=0; j<$scope.units.length; j++) {
