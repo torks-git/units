@@ -205,7 +205,7 @@ app.controller('myController',function($scope,$document) {
 	}
 
 	function is_platinum(unit) {
-		return ((unit.skills[1].type === "Unique") && (unit.name !== "Trivia"));
+		return (((unit.skills[0].type === "Unique") || (unit.skills[1].type === "Unique")) && (unit.name !== "Trivia"));
 	}
 	
 	$scope.hsort = function(header) {
