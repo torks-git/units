@@ -211,7 +211,7 @@ app.controller('myController',function($scope,$document) {
 	$scope.hsort = function(header) {
 		if (typeof header.sort === "undefined") return;
 		$scope.sortType2 = $scope.sortType;
-		$scope.sortReverse = $scope.sortType === header.sort ? !$scope.sortReverse : true;
+		//$scope.sortReverse = $scope.sortType === header.sort ? !$scope.sortReverse : true;
 		$scope.sortType = header.sort;
 	};
 	
