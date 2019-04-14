@@ -86,7 +86,7 @@
 					</thead>
 					<tbody>
 						<tr ng-repeat="unit in result | orderBy:[sortType,sortType2]:sortReverse | filter: '' track by unit.name" ng-class="::unit.element">
-							<td style="text-align: left; padding-left: 5px;"><a target="_blank" ng-href="http://ishtaria.wikia.com/wiki/{{::unit.name}}">{{::unit.name}}</a></td>
+							<td style="text-align: left; padding-left: 5px;"><!--<img style="width:40px;height:60px;" ng-attr-data-src="{{::unit.isrc}}" lazy-load />--><a target="_blank" ng-href="http://ishtaria.wikia.com/wiki/{{::unit.name}}">{{::unit.name}}</a></td>
 							<td>{{::unit.rarity}}</td>
 							<td><div class="bg_div" ng-style="::{'background-image': 'url(icons/'+unit.element+'.png)'}"></div></td>
 							<td><div class="bg_div" ng-style="::{'background-image': 'url(icons/'+unit.type+'_icon.png)'}"></div></td>

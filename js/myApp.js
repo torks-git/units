@@ -1,5 +1,28 @@
 
-var app = angular.module('myApp', []);
+var app = angular.module('myApp', []).directive('lazyLoad', lazyLoad);
+
+
+function loadImg(changes){
+				changes.forEach(change => {
+					console.log(change.intersectionRatio + " : " + change.target.dataset.src);
+					if(change.intersectionRatio > 0){
+						change.target.src = change.target.dataset.src;
+						//change.target.classList.remove('img-blur');
+					}
+				})
+}
+
+const observer = new IntersectionObserver(loadImg);
+
+function lazyLoad(){
+	return {
+		restrict: 'A',
+		link: function(scope, element, attrs){
+			const img = angular.element(element)[0];
+			observer.observe(img);
+		}
+	}
+}
 
 app.controller('myController',function($scope,$document) {
 	$scope.units = [];
@@ -76,6 +99,7 @@ app.controller('myController',function($scope,$document) {
 		//comment this to disable P7 rarity
 		for (var j=0; j<$scope.units.length; j++) {
 			if (is_platinum($scope.units[j])) $scope.units[j].rarity = "P" + $scope.units[j].rarity;
+			$scope.units[j].isrc = "https://vignette.wikia.nocookie.net/age-of-ishtaria/images/" + (($scope.units[j].isrc == null) ? "b/b2/Empty-image.png" : $scope.units[j].isrc + "/" + $scope.units[j].name.split(' ').join('_') + ".png");
 		}
 		$scope.rarity.push({value: "P7", count: 0, active: true});
 
