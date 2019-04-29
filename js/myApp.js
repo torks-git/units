@@ -1,34 +1,30 @@
 
-var app = angular.module('myApp', []).directive('lazyLoad', lazyLoad);
+const observer = new IntersectionObserver(function(entries) {
+	entries.forEach(entry => {
+		if(entry.intersectionRatio > 0){
+			entry.target.src = entry.target.dataset.src;
+		}
+	});
+});
 
 
-function loadImg(changes){
-				changes.forEach(change => {
-					console.log(change.intersectionRatio + " : " + change.target.dataset.src);
-					if(change.intersectionRatio > 0){
-						change.target.src = change.target.dataset.src;
-						//change.target.classList.remove('img-blur');
-					}
-				})
-}
+var app = angular.module('myApp', []);
 
-const observer = new IntersectionObserver(loadImg);
-
-function lazyLoad(){
+app.directive('lazyLoad', function() {
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs){
 			const img = angular.element(element)[0];
 			observer.observe(img);
 		}
-	}
-}
+	};
+});
 
-app.controller('myController',function($scope,$document) {
+app.controller('myController', function($scope,$document) {
 	$scope.units = [];
 	$scope.tags = [];
 	$scope.abilities = ["*"];
-	$scope.rarity = [1,2,3,4,5,6,7,8];
+	$scope.rarity = [1,2,3,4,5,6,7,"P7",8];
 	$scope.elements = ["Earth","Fire","Water","Null"];
 	$scope.types = ["Flurry","Slice","Pound"];
 	$scope.skill_types = ["Support","Rush","Multi","Multi&Rush"];
@@ -96,12 +92,10 @@ app.controller('myController',function($scope,$document) {
 		$scope.rarity[$scope.rarity.length-1].active = true;
 		$scope.rarity[$scope.rarity.length-2].active = true;
 
-		//comment this to disable P7 rarity
-		for (var j=0; j<$scope.units.length; j++) {
-			if (is_platinum($scope.units[j])) $scope.units[j].rarity = "P" + $scope.units[j].rarity;
-			$scope.units[j].isrc = "https://vignette.wikia.nocookie.net/age-of-ishtaria/images/" + (($scope.units[j].isrc == null) ? "b/b2/Empty-image.png" : $scope.units[j].isrc + "/" + $scope.units[j].name.split(' ').join('_') + ".png");
-		}
-		$scope.rarity.push({value: "P7", count: 0, active: true});
+		$scope.units.forEach(unit => {
+			unit.isrc = "https://vignette.wikia.nocookie.net/age-of-ishtaria/images/" + ((unit.isrc === "") ? "b/b2/Empty-image.png" : unit.isrc + "/" + unit.name.split(' ').join('_') + ".png");
+			if (is_platinum(unit)) unit.rarity = "P" + unit.rarity;
+		});
 
 		$scope.search();
 
@@ -140,10 +134,11 @@ app.controller('myController',function($scope,$document) {
 				}
 			}
 		}
+
 		for (var j=0; j<$scope.abilities.length; j++) {
 			$scope.abilities[j].count = 0;
 		}
-
+		
 		for (var j=0; j<active_skill_types.length; j++) {
 			active_skill_types[j] = active_skill_types[j].replace("&","");
 		}

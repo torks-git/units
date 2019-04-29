@@ -63,7 +63,10 @@
 								<input type="checkbox" ng-model="evo.active"><span>{{::evo.value}} ({{evo.count}})</span>
 							</li>
 						</ul>
-						<button type="button" ng-click="search()" style="left:1.5em; position:relative;">Search</button>
+						<div style="display:block; margin-left:1em; float:none;">
+							<input type="checkbox" ng-model="showImages"> images
+						</div>
+						<button type="button" ng-click="search()" style="position:relative; left:1.5em; margin-top:1em;">Search</button>
 					</div>
 					<b style="bottom:15px; right:-25px; position:absolute;">{{::dateString}}</b>
 					<b style="bottom:40px; right:-25px; position:absolute;">{{result.length}}/{{::units.length}}</b>
@@ -86,13 +89,19 @@
 					</thead>
 					<tbody>
 						<tr ng-repeat="unit in result | orderBy:[sortType,sortType2]:sortReverse | filter: '' track by unit.name" ng-class="::unit.element">
-							<td style="text-align: left; padding-left: 5px;"><!--<img style="width:40px;height:60px;" ng-attr-data-src="{{::unit.isrc}}" lazy-load />--><a target="_blank" ng-href="http://ishtaria.wikia.com/wiki/{{::unit.name}}">{{::unit.name}}</a></td>
+							<td style="text-align: left; padding-left: 5px;">
+								<img style="width:40px;height:60px;" ng-show="showImages" ng-attr-data-src="{{::unit.isrc}}" lazy-load />
+								<a target="_blank" ng-href="http://ishtaria.wikia.com/wiki/{{::unit.name}}">{{::unit.name}}</a>
+							</td>
 							<td>{{::unit.rarity}}</td>
 							<td><div class="bg_div" ng-style="::{'background-image': 'url(icons/'+unit.element+'.png)'}"></div></td>
 							<td><div class="bg_div" ng-style="::{'background-image': 'url(icons/'+unit.type+'_icon.png)'}"></div></td>
 							<td>{{::unit.attack}}</td>
 							<td>{{::unit.hp}}</td>
-							<td>{{::abilities[unit.ability[0].ind+1].value}} {{::unit.ability[0].level}}<div ng-if="::unit.ability[1].ind"><hr>{{::abilities[unit.ability[1].ind+1].value}} {{::unit.ability[1].level}}</div></td>
+							<td>
+								{{::abilities[unit.ability[0].ind+1].value}} {{::unit.ability[0].level}}
+								<div ng-if="::unit.ability[1].ind"><hr>{{::abilities[unit.ability[1].ind+1].value}} {{::unit.ability[1].level}}</div>
+							</td>
 							<td><div ng-if="::unit.skills[0].chance">{{::unit.skills[0].chance}}%<br><img ng-src="icons/{{::unit.skills[0].type}}-icon.png"></div></td>
 							<td><p>{{::unit.skills[0].text}}</p></td>
 							<td><div ng-if="::unit.skills[1].chance">{{::unit.skills[1].chance}}%<br><img ng-src="icons/{{::unit.skills[1].type}}-icon.png"></div></td>
