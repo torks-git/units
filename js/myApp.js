@@ -58,7 +58,7 @@ app.controller('myController', function($scope,$document) {
 	var active_elements = [];
 	var active_skill_types = [];
 	var active_evolutions = [];
-	
+
 	function pad (str, max) {
 		str = str.toString();
 		return str.length < max ? pad("0" + str, max) : str;
@@ -138,7 +138,7 @@ app.controller('myController', function($scope,$document) {
 		for (var j=0; j<$scope.abilities.length; j++) {
 			$scope.abilities[j].count = 0;
 		}
-		
+
 		for (var j=0; j<active_skill_types.length; j++) {
 			active_skill_types[j] = active_skill_types[j].replace("&","");
 		}
@@ -158,7 +158,7 @@ app.controller('myController', function($scope,$document) {
 					if ($scope.skill_types[k].value.replace("&","") === $scope.result[i].skills[j].type) $scope.skill_types[k].count++;
 				}
 			}
-			
+
 			for (var j=0; j<$scope.result[i].ability.length; j++) {
 				$scope.abilities[$scope.result[i].ability[j].ind+1].count++;
 			}
@@ -204,7 +204,7 @@ app.controller('myController', function($scope,$document) {
 			}
 		}
 
-		
+
 		if ($scope.ability !== 0) {
 			var f = false;
 			for (var j=0; j<unit.ability.length; j++) {
@@ -214,7 +214,7 @@ app.controller('myController', function($scope,$document) {
 			}
 			if (!f) return false;
 		}
-		
+
 		if (active_types.indexOf(unit.type) === -1) return false;
 		if (active_elements.indexOf(unit.element) === -1) return false;
 		if (active_rarity.indexOf(unit.rarity) === -1) return false;
@@ -226,14 +226,14 @@ app.controller('myController', function($scope,$document) {
 	function is_platinum(unit) {
 		return (((unit.skills[0].type === "Unique") || (unit.skills[1].type === "Unique")) && (unit.name !== "Trivia"));
 	}
-	
+
 	$scope.hsort = function(header) {
 		if (typeof header.sort === "undefined") return;
 		$scope.sortType2 = $scope.sortType;
 		//$scope.sortReverse = $scope.sortType === header.sort ? !$scope.sortReverse : true;
 		$scope.sortType = header.sort;
 	};
-	
+
 	$scope.csort = function(val,rev) {
 		$scope.sortType2 = $scope.sortType;
 		$scope.sortType = val;

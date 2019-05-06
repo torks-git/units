@@ -3,7 +3,7 @@
 	<head>
 		<title>AoI Units</title>
 		<meta charset="UTF-8">
-		<link rel="icon" type="image/png" href="icons/idun.png"/>
+		<link rel="icon" type="image/png" href="icons/idun.png">
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
 		<script type="text/javascript" src="data/unit_data.js"></script>
 		<script type="text/javascript" src="js/myApp.js"></script>
@@ -90,7 +90,7 @@
 					<tbody>
 						<tr ng-repeat="unit in result | orderBy:[sortType,sortType2]:sortReverse | filter: '' track by unit.name" ng-class="::unit.element">
 							<td style="text-align: left; padding-left: 5px;">
-								<img style="width:40px;height:60px;" ng-show="showImages" ng-attr-data-src="{{::unit.isrc}}" lazy-load />
+								<img lazy-load style="width:40px;height:60px;" ng-show="showImages" ng-attr-data-src="{{::unit.isrc}}">
 								<a target="_blank" ng-href="http://ishtaria.wikia.com/wiki/{{::unit.name}}">{{::unit.name}}</a>
 							</td>
 							<td>{{::unit.rarity}}</td>
@@ -100,7 +100,7 @@
 							<td>{{::unit.hp}}</td>
 							<td>
 								{{::abilities[unit.ability[0].ind+1].value}} {{::unit.ability[0].level}}
-								<div ng-if="::unit.ability[1].ind"><hr>{{::abilities[unit.ability[1].ind+1].value}} {{::unit.ability[1].level}}</div>
+								<div ng-if="::unit.ability.length > 1"><hr>{{::abilities[unit.ability[1].ind+1].value}} {{::unit.ability[1].level}}</div>
 							</td>
 							<td><div ng-if="::unit.skills[0].chance">{{::unit.skills[0].chance}}%<br><img ng-src="icons/{{::unit.skills[0].type}}-icon.png"></div></td>
 							<td><p>{{::unit.skills[0].text}}</p></td>
