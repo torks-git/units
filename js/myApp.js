@@ -69,7 +69,7 @@ app.controller('myController', function($scope,$document,myData) {
 		return str.length < max ? pad("0" + str, max) : str;
 	}
 	
-	myData.success(function(data) { 
+	myData.then(function(data) { 
 		test = data;
 		console.log("data have been loaded");
 	});
