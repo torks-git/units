@@ -7,6 +7,7 @@ const observer = new IntersectionObserver(function(entries) {
 	});
 });
 
+
 var app = angular.module('myApp', []);
 
 app.directive('lazyLoad', function() {
@@ -19,11 +20,7 @@ app.directive('lazyLoad', function() {
 	};
 });
 
-app.factory('myData', function($http) { 
-	return $http.get('data/unit_data.json');
-});
-
-app.controller('myController', function($scope,$document,myData) {
+app.controller('myController', function($scope,$document) {
 	$scope.units = [];
 	$scope.tags = [];
 	$scope.abilities = ["*"];
@@ -32,9 +29,9 @@ app.controller('myController', function($scope,$document,myData) {
 	$scope.types = ["Flurry","Slice","Pound"];
 	$scope.skill_types = ["Support","Rush","Multi","MultiRush"];
 	$scope.evolutions = [0,2,4];
-	$scope.ability = 0;
 	$scope.result = [];
 	$scope.overlay = true;
+	$scope.ability = 0;
 	$scope.dateString = null;
 
 	$scope.headers = [
@@ -62,26 +59,23 @@ app.controller('myController', function($scope,$document,myData) {
 	var active_skill_types = [];
 	var active_evolutions = [];
 
-	function pad(str, max) {
+	function pad (str, max) {
 		str = str.toString();
 		return str.length < max ? pad("0" + str, max) : str;
 	}
 
-	function reset_scope() {
-		$scope.rarity = [1,2,3,4,5,6,7,"P7",8];
-		$scope.elements = ["Earth","Fire","Water","Null"];
-		$scope.types = ["Flurry","Slice","Pound"];
-		$scope.skill_types = ["Support","Rush","Multi","MultiRush"];
-		$scope.evolutions = [0,2,4];
-		$scope.ability = 0;
-		$scope.result = [];
-		$scope.overlay = true;
-
-		$scope.sortType = 'element';
-		$scope.sortType2 = 'element';
-		$scope.sortReverse = false;
-
+	$scope.myinit = function() {
 		var tmp,i,j;
+
+		if (typeof aoi_data !== "undefined") {
+			if (typeof aoi_data.units !== "undefined") $scope.units = aoi_data.units;
+			if (typeof aoi_data.tags !== "undefined") $scope.tags = aoi_data.tags;
+			if (typeof aoi_data.abilities !== "undefined") $scope.abilities = $scope.abilities.concat(aoi_data.abilities);
+			if (typeof aoi_data.timestamp !== "undefined") {
+				tmp = new Date(aoi_data.timestamp);
+				$scope.dateString = "UTC  " + pad(tmp.getUTCHours(),2) + ":" + pad(tmp.getUTCMinutes(),2) + " - " + pad(tmp.getUTCDate(),2) + "/" + pad(tmp.getUTCMonth()+1,2) + "/" + tmp.getUTCFullYear();
+			}
+		}
 
 		var scopes = [$scope.abilities, $scope.tags, $scope.skill_types, $scope.rarity, $scope.elements, $scope.types, $scope.evolutions];
 		for (i=0; i<scopes.length; i++) {
@@ -104,28 +98,8 @@ app.controller('myController', function($scope,$document,myData) {
 		});
 
 		$scope.search();
-	}
 
-	myData.then(function(response) {
-		test = response;
-		console.log("data have been loaded");
-		
-		if (typeof response.data === "object") {
-			if (typeof response.data.units !== "undefined") $scope.units = response.data.units;
-			if (typeof response.data.tags !== "undefined") $scope.tags = response.data.tags;
-			if (typeof response.data.abilities !== "undefined") $scope.abilities = ["*"].concat(response.data.abilities);
-			if (typeof response.data.timestamp !== "undefined") {
-				tmp = new Date(response.data.timestamp);
-				$scope.dateString = "UTC  " + pad(tmp.getUTCHours(),2) + ":" + pad(tmp.getUTCMinutes(),2) + " - " + pad(tmp.getUTCDate(),2) + "/" + pad(tmp.getUTCMonth()+1,2) + "/" + tmp.getUTCFullYear();
-			}
-			reset_scope();
-		}
-	});
-
-	$scope.myinit = function() {
-		reset_scope();
-
-		var tmp = $document[0].getElementsByClassName("search_overlay")[0];
+		tmp = $document[0].getElementsByClassName("search_overlay")[0];
 		$document[0].onclick = function (event) {
 			if ($scope.overlay && !tmp.contains(event.target)) {
 				$scope.overlay = false;
