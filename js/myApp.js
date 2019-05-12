@@ -7,6 +7,7 @@ const observer = new IntersectionObserver(function(entries) {
 	});
 });
 
+var test = {};
 
 var app = angular.module('myApp', []);
 
@@ -20,7 +21,11 @@ app.directive('lazyLoad', function() {
 	};
 });
 
-app.controller('myController', function($scope,$document) {
+app.factory('myData', function($http) { 
+	return $http.get('data/unit_data.json');
+});
+
+app.controller('myController', function($scope,$document,myData) {
 	$scope.units = [];
 	$scope.tags = [];
 	$scope.abilities = ["*"];
@@ -63,6 +68,11 @@ app.controller('myController', function($scope,$document) {
 		str = str.toString();
 		return str.length < max ? pad("0" + str, max) : str;
 	}
+	
+	myData.success(function(data) { 
+		test = data;
+		console.log("data have been loaded");
+	});
 
 	$scope.myinit = function() {
 		var tmp,i,j;
