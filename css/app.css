@@ -103,6 +103,6 @@ a {
 	border-color: black transparent transparent;
 }
 
-.hide img {
+.hide tr > *:nth-child(1) img {
 	display: none;
 }
