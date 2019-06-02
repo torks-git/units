@@ -1,7 +1,7 @@
 
 const observer = new IntersectionObserver(function(entries) {
 	entries.forEach(entry => {
-		if(entry.intersectionRatio > 0){
+		if (entry.intersectionRatio > 0) {
 			entry.target.src = entry.target.dataset.src;
 		}
 	});
@@ -13,7 +13,7 @@ var app = angular.module('myApp', []);
 app.directive('lazyLoad', function() {
 	return {
 		restrict: 'A',
-		link: function(scope, element, attrs){
+		link: function(scope, element, attrs) {
 			const img = angular.element(element)[0];
 			observer.observe(img);
 		}
@@ -80,9 +80,8 @@ app.controller('myController', function($scope,$document) {
 		var scopes = [$scope.abilities, $scope.tags, $scope.skill_types, $scope.rarity, $scope.elements, $scope.types, $scope.evolutions];
 		for (i=0; i<scopes.length; i++) {
 			for (j=0; j<scopes[i].length; j++) {
-				tmp = scopes[i][j];
 				scopes[i][j] = {
-					value: tmp,
+					value: scopes[i][j],
 					count: 0,
 					active: (i > 3) ? true : false
 				};
@@ -126,90 +125,62 @@ app.controller('myController', function($scope,$document) {
 			{ref: $scope.evolutions, act: active_evolutions}
 		];
 
-		var i,j,k;
-
-		for (i=0; i<filters.length; i++) {
-			for (j=0; j<filters[i].ref.length; j++) {
-				filters[i].ref[j].count = 0;
-				if (filters[i].ref[j].active) {
-					filters[i].act.push( i > 0 ? filters[i].ref[j].value : j);
+		filters.forEach((filter,index1) => {
+			filter.ref.forEach((ref,index2) => {
+				ref.count = 0;
+				if (ref.active) {
+					filter.act.push( index1 > 0 ? ref.value : index2);
 				}
-			}
-		}
+			});
+		});
 
-		for (i=0; i<$scope.abilities.length; i++) {
-			$scope.abilities[i].count = 0;
-		}
+		$scope.abilities.forEach(ability => ability.count = 0);
 
-		for (i=0; i<$scope.units.length; i++) {
-			if(check_unit($scope.units[i])) {
-				$scope.result.push($scope.units[i]);
-			}
-		}
+		$scope.result = $scope.units.filter(unit => check_unit(unit));
 
-		for (i=0; i<$scope.result.length; i++) {
-			for (j=0; j<$scope.result[i].skills.length; j++) {
-				for (k=0; k<$scope.result[i].skills[j].tags.length; k++) {
-					$scope.tags[$scope.result[i].skills[j].tags[k]].count++;
-				}
-				for (k=0; k<$scope.skill_types.length; k++) {
-					if ($scope.skill_types[k].value === $scope.result[i].skills[j].type) $scope.skill_types[k].count++;
-				}
-			}
+		$scope.result.forEach(unit => {
+			unit.skills.forEach(skill => {
+				skill.tags.forEach(tag => {
+					$scope.tags[tag].count++;
+				});
+				$scope.skill_types.forEach(skill_type => { if (skill_type.value === skill.type) skill_type.count++; });
+			});
 
-			for (j=0; j<$scope.result[i].ability.length; j++) {
-				$scope.abilities[$scope.result[i].ability[j].ind+1].count++;
-			}
-			for (k=0; k<$scope.rarity.length; k++) {
-				if ($scope.rarity[k].value === $scope.result[i].rarity) $scope.rarity[k].count++;
-			}
-			for (k=0; k<$scope.elements.length; k++) {
-				if ($scope.elements[k].value === $scope.result[i].element) $scope.elements[k].count++;
-			}
-			for (k=0; k<$scope.types.length; k++) {
-				if ($scope.types[k].value === $scope.result[i].type) $scope.types[k].count++;
-			}
-			for (k=0; k<$scope.evolutions.length; k++) {
-				if ($scope.evolutions[k].value === $scope.result[i].evolutions) $scope.evolutions[k].count++;
-			}
-		}
-		$scope.abilities[0].count=$scope.result.length;
+			unit.ability.forEach(ability => { $scope.abilities[ability.ind+1].count++; });
 
-		for (k=0; k<$scope.rarity.length; k++) {
-			if (!$scope.rarity[k].active) $scope.rarity[k].count = '-';
-		}
-		for (k=0; k<$scope.elements.length; k++) {
-			if (!$scope.elements[k].active) $scope.elements[k].count = '-';
-		}
-		for (k=0; k<$scope.types.length; k++) {
-			if (!$scope.types[k].active) $scope.types[k].count = '-';
-		}
-		for (k=0; k<$scope.evolutions.length; k++) {
-			if (!$scope.evolutions[k].active) $scope.evolutions[k].count = '-';
-		}
+			$scope.rarity.forEach(rarity => { if (rarity.value === unit.rarity) rarity.count++; });
+			$scope.elements.forEach(element => { if (element.value === unit.element) element.count++; });
+			$scope.types.forEach(type => { if (type.value === unit.type) type.count++; });
+			$scope.evolutions.forEach(evolution => { if (evolution.value === unit.evolutions) evolution.count++; });
+		});
+
+		$scope.abilities[0].count = $scope.result.length;
+
+		$scope.rarity.forEach(rarity => { if (!rarity.active) rarity.count = '-'; });
+		$scope.elements.forEach(element => { if (!element.active) element.count = '-'; });
+		$scope.types.forEach(type => { if (!type.active) type.count = '-'; });
+		$scope.evolutions.forEach(evolution => { if (!evolution.active) evolution.count = '-'; });
 	};
 
 	function check_unit(unit) {
-		for (var j=0; j<active_tags.length; j++) {
+		var j,flg;
+
+		for (j=0; j<active_tags.length; j++) {
 			if ( (unit.skills[0].tags.indexOf(active_tags[j]) === -1) && (unit.skills[1].tags.indexOf(active_tags[j]) === -1) ) {
 				return false;
 			}
 		}
 
-		for (var j=0; j<active_skill_types.length; j++) {
+		for (j=0; j<active_skill_types.length; j++) {
 			if ( (unit.skills[0].type !== active_skill_types[j]) && (unit.skills[1].type !== active_skill_types[j]) ) {
 				return false;
 			}
 		}
 
 		if ($scope.ability !== 0) {
-			var f = false;
-			for (var j=0; j<unit.ability.length; j++) {
-				if (unit.ability[j].ind+1 === $scope.ability) {
-					f = true;
-				}
-			}
-			if (!f) return false;
+			flg = false;
+			unit.ability.forEach(ability => { if (ability.ind+1 === $scope.ability) flg = true; });
+			if (!flg) return false;
 		}
 
 		if (active_types.indexOf(unit.type) === -1) return false;
