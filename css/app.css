@@ -102,3 +102,7 @@ a {
 .down {
 	border-color: black transparent transparent;
 }
+
+.hide img {
+	display: none;
+}
