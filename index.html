@@ -73,7 +73,7 @@
 				</div>
 			</div>
 			<div style="padding:10px;">
-				<table ng-class="{ hide : !showImages }">
+				<table ng-class="{ 'hide' : !showImages }">
 					<thead>
 						<tr>
 							<th ng-repeat="header in ::headers">
@@ -88,10 +88,10 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="unit in result | orderBy:[sortType,sortType2]:sortReverse | filter: '' track by unit.name" ng-class="::unit.element">
+						<tr ng-repeat="unit in result | orderBy:[sortType1,sortType2]:sortReverse | filter: '' track by unit.name" ng-class="::unit.element">
 							<td style="text-align: left; padding-left: 5px;">
 								<img lazy-load style="width:40px;height:60px;" ng-attr-data-src="{{::unit.isrc}}">
-								<a target="_blank" ng-href="http://ishtaria.wikia.com/wiki/{{::unit.name}}">{{::unit.name}}</a>
+								<a target="_blank" ng-href="{{::unit.src}}">{{::unit.name}}</a>
 							</td>
 							<td>{{::unit.rarity}}</td>
 							<td><div class="bg_div" ng-style="::{'background-image': 'url(icons/'+unit.element+'.png)'}"></div></td>

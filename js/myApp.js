@@ -23,11 +23,11 @@ app.directive('lazyLoad', function() {
 app.controller('myController', function($scope,$document) {
 	$scope.units = [];
 	$scope.tags = [];
-	$scope.abilities = ["*"];
-	$scope.rarity = [1,2,3,4,5,6,7,"P7",8];
-	$scope.elements = ["Earth","Fire","Water","Null"];
-	$scope.types = ["Flurry","Slice","Pound"];
-	$scope.skill_types = ["Support","Rush","Multi","MultiRush"];
+	$scope.abilities = ['*'];
+	$scope.rarity = [1,2,3,4,5,6,7,'P7',8];
+	$scope.elements = ['Earth','Fire','Water','Null'];
+	$scope.types = ['Flurry','Slice','Pound'];
+	$scope.skill_types = ['Support','Rush','Multi','MultiRush'];
 	$scope.evolutions = [0,2,4];
 	$scope.result = [];
 	$scope.overlay = true;
@@ -35,22 +35,26 @@ app.controller('myController', function($scope,$document) {
 	$scope.dateString = null;
 
 	$scope.headers = [
-		{name: "Name", sort: "name"},
-		{name: "Rarity", sort: "rarity"},
-		{name: "Element", sort: "element"},
-		{name: "Type", sort: "type"},
-		{name: "Attack", sort: "attack"},
-		{name: "HP", sort: "hp"},
-		{name: "Ability", sort: "ability[0].ind"},
-		{name: ""},
-		{name: "Skill 1"},
-		{name: ""},
-		{name: "Skill 2"}
+		{name: 'Name', sort: 'name'},
+		{name: 'Rarity', sort: 'rarity'},
+		{name: 'Element', sort: 'element'},
+		{name: 'Type', sort: 'type'},
+		{name: 'Attack', sort: 'attack'},
+		{name: 'HP', sort: 'hp'},
+		{name: 'Ability', sort: 'ability[0].ind'},
+		{name: ''},
+		{name: 'Skill 1'},
+		{name: ''},
+		{name: 'Skill 2'}
 	];
 
-	$scope.sortType = 'element';
+	$scope.sortType1 = 'element';
 	$scope.sortType2 = 'element';
 	$scope.sortReverse = false;
+
+	const unit_prefix = 'http://ishtaria.wikia.com/wiki/';
+	const img_prefix = 'https://vignette.wikia.nocookie.net/age-of-ishtaria/images/';
+	const empty_img = 'b/b2/Empty-image.png';
 
 	var active_tags = [];
 	var active_rarity = [];
@@ -61,19 +65,19 @@ app.controller('myController', function($scope,$document) {
 
 	function pad (str, max) {
 		str = str.toString();
-		return str.length < max ? pad("0" + str, max) : str;
+		return str.length < max ? pad('0' + str, max) : str;
 	}
 
 	$scope.myinit = function() {
 		var tmp,i,j;
 
-		if (typeof aoi_data !== "undefined") {
-			if (typeof aoi_data.units !== "undefined") $scope.units = aoi_data.units;
-			if (typeof aoi_data.tags !== "undefined") $scope.tags = aoi_data.tags;
-			if (typeof aoi_data.abilities !== "undefined") $scope.abilities = $scope.abilities.concat(aoi_data.abilities);
-			if (typeof aoi_data.timestamp !== "undefined") {
+		if (typeof aoi_data !== 'undefined') {
+			if (typeof aoi_data.units !== 'undefined') $scope.units = aoi_data.units;
+			if (typeof aoi_data.tags !== 'undefined') $scope.tags = aoi_data.tags;
+			if (typeof aoi_data.abilities !== 'undefined') $scope.abilities = $scope.abilities.concat(aoi_data.abilities);
+			if (typeof aoi_data.timestamp !== 'undefined') {
 				tmp = new Date(aoi_data.timestamp);
-				$scope.dateString = "UTC  " + pad(tmp.getUTCHours(),2) + ":" + pad(tmp.getUTCMinutes(),2) + " - " + pad(tmp.getUTCDate(),2) + "/" + pad(tmp.getUTCMonth()+1,2) + "/" + tmp.getUTCFullYear();
+				$scope.dateString = 'UTC  ' + pad(tmp.getUTCHours(),2) + ':' + pad(tmp.getUTCMinutes(),2) + ' - ' + pad(tmp.getUTCDate(),2) + '/' + pad(tmp.getUTCMonth()+1,2) + '/' + tmp.getUTCFullYear();
 			}
 		}
 
@@ -83,7 +87,7 @@ app.controller('myController', function($scope,$document) {
 				scopes[i][j] = {
 					value: scopes[i][j],
 					count: 0,
-					active: (i > 3) ? true : false
+					active: (i > 3)
 				};
 			}
 		}
@@ -92,13 +96,14 @@ app.controller('myController', function($scope,$document) {
 		$scope.rarity[$scope.rarity.length-2].active = true;
 
 		$scope.units.forEach(unit => {
-			unit.isrc = "https://vignette.wikia.nocookie.net/age-of-ishtaria/images/" + ((unit.isrc === "") ? "b/b2/Empty-image.png" : unit.isrc + "/" + unit.name.split(' ').join('_') + ".png");
-			if (is_platinum(unit)) unit.rarity = "P" + unit.rarity;
+			unit.src = unit_prefix + unit.name;
+			unit.isrc = img_prefix + ((unit.isrc === '') ? empty_img : (unit.isrc + '/' + unit.name.split(' ').join('_') + '.png'));
+			if (is_platinum(unit)) unit.rarity = 'P' + unit.rarity;
 		});
 
 		$scope.search();
 
-		tmp = $document[0].getElementsByClassName("search_overlay")[0];
+		tmp = $document[0].getElementsByClassName('search_overlay')[0];
 		$document[0].onclick = function (event) {
 			if ($scope.overlay && !tmp.contains(event.target)) {
 				$scope.overlay = false;
@@ -192,19 +197,19 @@ app.controller('myController', function($scope,$document) {
 	}
 
 	function is_platinum(unit) {
-		return (((unit.skills[0].type === "Unique") || (unit.skills[1].type === "Unique")) && (unit.name !== "Trivia"));
+		return (((unit.skills[0].type === 'Unique') || (unit.skills[1].type === 'Unique')) && (unit.name !== 'Trivia'));
 	}
 
 	$scope.hsort = function(header) {
-		if (typeof header.sort === "undefined") return;
-		if ($scope.sortType === header.sort) $scope.sortReverse = !$scope.sortReverse;
-		$scope.sortType2 = $scope.sortType;
-		$scope.sortType = header.sort;
+		if (typeof header.sort === 'undefined') return;
+		if ($scope.sortType1 === header.sort) $scope.sortReverse = !$scope.sortReverse;
+		$scope.sortType2 = $scope.sortType1;
+		$scope.sortType1 = header.sort;
 	};
 
 	$scope.csort = function(val,rev) {
 		$scope.sortReverse = rev;
-		$scope.sortType2 = $scope.sortType;
-		$scope.sortType = val;
+		$scope.sortType2 = $scope.sortType1;
+		$scope.sortType1 = val;
 	};
 });
