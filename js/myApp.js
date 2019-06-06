@@ -89,7 +89,7 @@ app.controller('myController', function($scope,$document,$log,unitData) {
 
 	$scope.init = function() {
 		unitData.then(response => {
-			$log.log(response.status + " : " + response.statusText);
+			$log.log(response.status);
 
 			if (typeof response.data !== 'undefined') {
 				if (typeof response.data.units !== 'undefined') $scope.units = response.data.units;
