@@ -4,23 +4,24 @@
 		<title>AoI Units</title>
 		<meta charset="UTF-8">
 		<link rel="icon" type="image/png" href="icons/idun.png">
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
-		<script type="text/javascript" src="data/unit_data.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular-animate.min.js"></script>
 		<script type="text/javascript" src="js/myApp.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/app.css">
 	</head>
 	<body>
-		<div ng-app="myApp" ng-controller="myController" ng-init="myinit()">
-			<div class="search_overlay" ng-style="{'opacity' : overlay ? 1 : 0.3 }">
-				<div style="padding-top: 0px; float:right;">
-					<button type="button" ng-click="overlay = !overlay">{{ overlay ? "&gt;&gt;&gt;" : "&lt;&lt;&lt;"}}</button>
+		<div ng-app="myApp" ng-controller="myController" ng-init="init()">
+			<div ng-if="settings.loaded" class="animate-if">
+			<div class="search_overlay" ng-style="{'opacity' : settings.overlay ? 1 : 0.3 }">
+				<div style="padding-top: 0px; float:right;" >
+					<button type="button" ng-click="settings.overlay = !settings.overlay">{{ settings.overlay ? "&gt;&gt;&gt;" : "&lt;&lt;&lt;"}}</button>
 				</div>
-				<div ng-show="overlay" style="position: relative;">
+				<div ng-show="settings.overlay" style="position: relative;">
 					<div>
 						<b>Ability</b>
 						<ul>
-							<li ng-repeat="ability_i in ::abilities" ng-style="{'color' : ability_i.count ? 'black' : 'darkgrey' }">
-								<input type="radio" ng-model="$parent.ability" ng-value="::$index"><span>{{::ability_i.value}} ({{ability_i.count}})</span>
+							<li ng-repeat="ability in ::abilities" ng-style="{'color' : ability.count ? 'black' : 'darkgrey' }">
+								<input type="radio" ng-model="settings.ability" ng-value="::$index"><span>{{ability.value}} ({{ability.count}})</span>
 							</li>
 						</ul>
 					</div>
@@ -64,7 +65,7 @@
 							</li>
 						</ul>
 						<div style="display:block; margin-left:1em; float:none;">
-							<input type="checkbox" ng-model="showImages"> images
+							<input type="checkbox" ng-model="settings.showImages"> images
 						</div>
 						<button type="button" ng-click="search()" style="position:relative; left:1.5em; margin-top:1em;">Search</button>
 					</div>
@@ -73,7 +74,7 @@
 				</div>
 			</div>
 			<div style="padding:10px;">
-				<table ng-class="{ 'hide' : !showImages }">
+				<table ng-class="{ 'hide' : !settings.showImages }">
 					<thead>
 						<tr>
 							<th ng-repeat="header in ::headers">
@@ -88,7 +89,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="unit in result | orderBy:[sortType1,sortType2]:sortReverse | filter: '' track by unit.name" ng-class="::unit.element">
+						<tr ng-repeat="unit in result | orderBy:[sort.type1,sort.type2]:sort.reverse | filter: '' track by unit.name" ng-class="::unit.element">
 							<td style="text-align: left; padding-left: 5px;">
 								<img lazy-load style="width:40px;height:60px;" ng-attr-data-src="{{::unit.isrc}}">
 								<a target="_blank" ng-href="{{::unit.src}}">{{::unit.name}}</a>
@@ -109,6 +110,7 @@
 						</tr>
 					</tbody>
 				</table>
+			</div>
 			</div>
 		</div>
 	</body>

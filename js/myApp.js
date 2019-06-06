@@ -1,5 +1,5 @@
 
-(function () {
+(function() {
 
 const observer = new IntersectionObserver(function(entries) {
 	entries.forEach(entry => {
@@ -10,7 +10,7 @@ const observer = new IntersectionObserver(function(entries) {
 });
 
 
-var app = angular.module('myApp', []);
+var app = angular.module('myApp', ['ngAnimate']);
 
 app.directive('lazyLoad', function() {
 	return {
@@ -22,7 +22,12 @@ app.directive('lazyLoad', function() {
 	};
 });
 
-app.controller('myController', function($scope,$document) {
+app.factory('unitData', function($http) {
+	return $http.get('data/unit_data.json');
+});
+
+app.controller('myController', function($scope,$document,$log,unitData) {
+	$scope.dateString = '';
 	$scope.units = [];
 	$scope.tags = [];
 	$scope.abilities = ['*'];
@@ -32,9 +37,12 @@ app.controller('myController', function($scope,$document) {
 	$scope.skill_types = ['Support','Rush','Multi','MultiRush'];
 	$scope.evolutions = [0,2,4];
 	$scope.result = [];
-	$scope.overlay = true;
-	$scope.ability = 0;
-	$scope.dateString = null;
+	$scope.settings = {
+		ability: 0,
+		showImages: false,
+		overlay: true,
+		loaded: false
+	};
 
 	$scope.headers = [
 		{name: 'Name', sort: 'name'},
@@ -50,9 +58,11 @@ app.controller('myController', function($scope,$document) {
 		{name: 'Skill 2'}
 	];
 
-	$scope.sortType1 = 'element';
-	$scope.sortType2 = 'element';
-	$scope.sortReverse = false;
+	$scope.sort = {
+		type1: 'element',
+		type2: 'name',
+		reverse: false
+	};
 
 	const unit_prefix = 'http://ishtaria.wikia.com/wiki/';
 	const img_prefix = 'https://vignette.wikia.nocookie.net/age-of-ishtaria/images/';
@@ -65,54 +75,65 @@ app.controller('myController', function($scope,$document) {
 	var active_skill_types = [];
 	var active_evolutions = [];
 
-	function pad (str, max) {
-		str = str.toString();
-		return str.length < max ? pad('0' + str, max) : str;
+	function pad(str, max) {
+		return str.toString().length < max ? pad('0' + str.toString(), max) : str;
 	}
 
-	$scope.myinit = function() {
-		var tmp,i,j;
-
-		if (typeof aoi_data !== 'undefined') {
-			if (typeof aoi_data.units !== 'undefined') $scope.units = aoi_data.units;
-			if (typeof aoi_data.tags !== 'undefined') $scope.tags = aoi_data.tags;
-			if (typeof aoi_data.abilities !== 'undefined') $scope.abilities = $scope.abilities.concat(aoi_data.abilities);
-			if (typeof aoi_data.timestamp !== 'undefined') {
-				tmp = new Date(aoi_data.timestamp);
-				$scope.dateString = 'UTC  ' + pad(tmp.getUTCHours(),2) + ':' + pad(tmp.getUTCMinutes(),2) + ' - ' + pad(tmp.getUTCDate(),2) + '/' + pad(tmp.getUTCMonth()+1,2) + '/' + tmp.getUTCFullYear();
-			}
-		}
-
-		var scopes = [$scope.abilities, $scope.tags, $scope.skill_types, $scope.rarity, $scope.elements, $scope.types, $scope.evolutions];
-		for (i=0; i<scopes.length; i++) {
-			for (j=0; j<scopes[i].length; j++) {
-				scopes[i][j] = {
-					value: scopes[i][j],
-					count: 0,
-					active: (i > 3)
-				};
-			}
-		}
-
-		$scope.rarity[$scope.rarity.length-1].active = true;
-		$scope.rarity[$scope.rarity.length-2].active = true;
-
-		$scope.units.forEach(unit => {
-			unit.src = unit_prefix + unit.name;
-			unit.isrc = img_prefix + ((unit.isrc === '') ? empty_img : (unit.isrc + '/' + unit.name.split(' ').join('_') + '.png'));
-			if (is_platinum(unit)) unit.rarity = 'P' + unit.rarity;
-		});
-
-		$scope.search();
-
-		tmp = $document[0].getElementsByClassName('search_overlay')[0];
-		$document[0].onclick = function (event) {
-			if ($scope.overlay && !tmp.contains(event.target)) {
-				$scope.overlay = false;
-				$scope.$apply();
-			}
+	function make_obj(val,active) {
+		return { 
+			value: val,
+			count: 0,
+			active: active
 		};
+	}
+
+	$scope.init = function() {
+		unitData.then(response => {
+			$log.log(response.status + " : " + response.statusText);
+
+			if (typeof response.data !== 'undefined') {
+				if (typeof response.data.units !== 'undefined') $scope.units = response.data.units;
+				if (typeof response.data.tags !== 'undefined') $scope.tags = response.data.tags;
+				if (typeof response.data.abilities !== 'undefined') $scope.abilities = $scope.abilities.concat(response.data.abilities);
+				if (typeof response.data.timestamp !== 'undefined') {
+					let tmp = new Date(response.data.timestamp);
+					$scope.dateString = 'UTC  ' + pad(tmp.getUTCHours(),2) + ':' + pad(tmp.getUTCMinutes(),2) + ' - ' + pad(tmp.getUTCDate(),2) + '/' + pad(tmp.getUTCMonth()+1,2) + '/' + tmp.getUTCFullYear();
+				}
+			}
+
+			$scope.abilities = $scope.abilities.map(x => make_obj(x,false));
+			$scope.tags = $scope.tags.map(x => make_obj(x,false));
+			$scope.skill_types = $scope.skill_types.map(x => make_obj(x,false));
+			$scope.rarity = $scope.rarity.map(x => make_obj(x,false));
+			$scope.elements = $scope.elements.map(x => make_obj(x,true));
+			$scope.types = $scope.types.map(x => make_obj(x,true));
+			$scope.evolutions = $scope.evolutions.map(x => make_obj(x,true));
+
+			$scope.rarity[$scope.rarity.length-1].active = true;
+			$scope.rarity[$scope.rarity.length-2].active = true;
+
+			$scope.units.forEach(unit => {
+				unit.src = unit_prefix + unit.name;
+				unit.isrc = img_prefix + ((unit.isrc === '') ? empty_img : (unit.isrc + '/' + unit.name.split(' ').join('_') + '.png'));
+				if (is_platinum(unit)) unit.rarity = 'P' + unit.rarity;
+			});
+
+			$scope.search();
+
+			$document[0].onclick = function(event) {
+				let ov = $document[0].getElementsByClassName('search_overlay')[0];
+				if ($scope.settings.overlay && !ov.contains(event.target)) {
+					$scope.settings.overlay = false;
+					$scope.$apply();
+				}
+			};
+
+			$scope.settings.loaded = true;
+		}, error => {
+			$log.error(error);
+		});
 	};
+
 
 	$scope.search = function() {
 		active_tags = [];
@@ -184,9 +205,9 @@ app.controller('myController', function($scope,$document) {
 			}
 		}
 
-		if ($scope.ability !== 0) {
+		if ($scope.settings.ability !== 0) {
 			flg = false;
-			unit.ability.forEach(ability => { if (ability.ind+1 === $scope.ability) flg = true; });
+			unit.ability.forEach(ability => { if (ability.ind+1 === $scope.settings.ability) flg = true; });
 			if (!flg) return false;
 		}
 
@@ -204,15 +225,15 @@ app.controller('myController', function($scope,$document) {
 
 	$scope.hsort = function(header) {
 		if (typeof header.sort === 'undefined') return;
-		if ($scope.sortType1 === header.sort) $scope.sortReverse = !$scope.sortReverse;
-		$scope.sortType2 = $scope.sortType1;
-		$scope.sortType1 = header.sort;
+		if ($scope.sort.type1 === header.sort) $scope.sort.reverse = !$scope.sort.reverse;
+		$scope.sort.type2 = $scope.sort.type1;
+		$scope.sort.type1 = header.sort;
 	};
 
 	$scope.csort = function(val,rev) {
-		$scope.sortReverse = rev;
-		$scope.sortType2 = $scope.sortType1;
-		$scope.sortType1 = val;
+		$scope.sort.reverse = rev;
+		$scope.sort.type2 = $scope.sort.type1;
+		$scope.sort.type1 = val;
 	};
 });
 

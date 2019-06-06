@@ -1,4 +1,4 @@
-const aoi_data={
+{
 "timestamp" : 1559855066015,
 "units" : [
 {"sex":"male","name":"Abaddon","rarity":5,"type":"Pound","element":"Null","skills":[{"type":"Multi","chance":30,"name":"The Fifth Circle","text":"Fiercely slams all enemies","tags":[]},{"type":"Passive","chance":15,"name":"Lord of Locusts","text":"Massively boosts self ATK","tags":[2]}],"ability":[{"ind":0,"level":""}],"attack":3690,"hp":11280,"evolutions":2,"cost":17,"isrc":"0/0c"},
@@ -1820,4 +1820,4 @@ const aoi_data={
 ],
 "tags" : ["boost bonus rate","boost chance to awaken skills","boost self atk","boost self def","boost self hp","boost self skill chance","boost team atk","boost team def","boost team hp","boost team skill chance","charge burst gauge","cleanse","heal over time","heal single ally","heal team","increase team ability turns","lower single atk","lower single def","lower single hp","lower team atk","lower team def","lower team hp","lower team skill chance","paralyze all","paralyze one","poison all","poison one","reduce burst gauge","reduce own ability turns","reduce received damage","reduce team ability turns","refresh support units","revive self","revive single","revive team","stun all","stun one"],
 "abilities" : ["-","Ability Rush","All Skill Boost","Bulging Biceps","Chiseled Out of Stone","Cleanse","Cure","Cure All","Cure All Jolt","Double Strike","Double Strike Storm","Earth Boost","Earth Cure All","Earth Flurry Boost","Earth Flurry Pact","Earth Jolt","Earth Pound Boost","Earth Pound Pact","Earth Slice Boost","Earth Slice Pact","Fire Boost","Fire Cure All","Fire Flurry Boost","Fire Flurry Pact","Fire Pound Boost","Fire Pound Pact","Fire Slice Boost","Fire Slice Pact","Flurry Boost","Glistening Guns","Luck of the Draw","Magical Maul","Null Boost","Null Cure All","Null Flurry Boost","Null Flurry Pact","Null Pound Pact","Null Slice Boost","Null Slice Pact","Overdrive","Poison Field","Poison Flurry Boost","Pound Boost","Reset","Reset All","Revive","Ruin","Skill Boost","Slice Boost","Triple Strike","Water Boost","Water Cure","Water Cure All","Water Flurry Boost","Water Flurry Pact","Water Pound Pact","Water Slice Boost","Wild Heal"]
-};
+}
