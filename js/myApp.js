@@ -156,9 +156,7 @@ app.controller('myController', function($scope,$document,$log,unitData) {
 		filters.forEach((filter,index1) => {
 			filter.ref.forEach((ref,index2) => {
 				ref.count = 0;
-				if (ref.active) {
-					filter.act.push( index1 > 0 ? ref.value : index2);
-				}
+				if (ref.active) filter.act.push(index1 > 0 ? ref.value : index2);
 			});
 		});
 
