@@ -192,15 +192,11 @@ app.controller('myController', function($scope,$document,$log,unitData) {
 		var j,flg;
 
 		for (j=0; j<active_tags.length; j++) {
-			if ( (unit.skills[0].tags.indexOf(active_tags[j]) === -1) && (unit.skills[1].tags.indexOf(active_tags[j]) === -1) ) {
-				return false;
-			}
+			if ( (unit.skills[0].tags.indexOf(active_tags[j]) === -1) && (unit.skills[1].tags.indexOf(active_tags[j]) === -1) ) return false;
 		}
 
 		for (j=0; j<active_skill_types.length; j++) {
-			if ( (unit.skills[0].type !== active_skill_types[j]) && (unit.skills[1].type !== active_skill_types[j]) ) {
-				return false;
-			}
+			if ( (unit.skills[0].type !== active_skill_types[j]) && (unit.skills[1].type !== active_skill_types[j]) ) return false;
 		}
 
 		if ($scope.settings.ability !== 0) {
