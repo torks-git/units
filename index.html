@@ -21,7 +21,7 @@
 						<b>Ability</b>
 						<ul>
 							<li ng-repeat="ability in ::abilities" ng-style="{'color' : ability.count ? 'black' : 'darkgrey' }">
-								<input type="radio" ng-model="settings.ability" ng-value="::$index"><span>{{ability.value}} ({{ability.count}})</span>
+								<input type="radio" ng-model="settings.ability" ng-value="::$index"><span>{{::ability.value}} ({{ability.count}})</span>
 							</li>
 						</ul>
 					</div>
