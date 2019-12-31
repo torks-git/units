@@ -34,14 +34,15 @@ app.controller('myController', function($scope,$document,$log,unitData) {
 	$scope.rarity = [1,2,3,4,5,6,7,'P7',8];
 	$scope.elements = ['Earth','Fire','Water','Null'];
 	$scope.types = ['Flurry','Slice','Pound'];
-	$scope.skill_types = ['Support','Rush','Multi','MultiRush'];
+	$scope.skill_types = ['Support','Rush','Multi','MultiRush','AllAtks'];
 	$scope.evolutions = [0,2,4];
 	$scope.result = [];
 	$scope.settings = {
 		ability: 0,
 		showImages: false,
 		overlay: true,
-		loaded: false
+		loaded: false,
+		firstAbility: false
 	};
 
 	$scope.headers = [
@@ -121,8 +122,8 @@ app.controller('myController', function($scope,$document,$log,unitData) {
 			$scope.search();
 
 			$document[0].onclick = function(event) {
-				let ov = $document[0].getElementsByClassName('search_overlay')[0];
-				if ($scope.settings.overlay && !ov.contains(event.target)) {
+				let ov = $document[0].getElementsByClassName('search_overlay');
+				if ($scope.settings.overlay && !ov[0].contains(event.target) && !ov[1].contains(event.target) ) {
 					$scope.settings.overlay = false;
 					$scope.$apply();
 				}
@@ -172,7 +173,8 @@ app.controller('myController', function($scope,$document,$log,unitData) {
 				$scope.skill_types.forEach(skill_type => { if (skill_type.value === skill.type) skill_type.count++; });
 			});
 
-			unit.ability.forEach(ability => { $scope.abilities[ability.ind+1].count++; });
+			if ($scope.settings.firstAbility) $scope.abilities[unit.ability[0].ind+1].count++;
+			else unit.ability.forEach(ability => { $scope.abilities[ability.ind+1].count++; });
 
 			$scope.rarity.forEach(rarity => { if (rarity.value === unit.rarity) rarity.count++; });
 			$scope.elements.forEach(element => { if (element.value === unit.element) element.count++; });
@@ -201,7 +203,8 @@ app.controller('myController', function($scope,$document,$log,unitData) {
 
 		if ($scope.settings.ability !== 0) {
 			flg = false;
-			unit.ability.forEach(ability => { if (ability.ind+1 === $scope.settings.ability) flg = true; });
+			if ($scope.settings.firstAbility) flg = unit.ability[0].ind+1 === $scope.settings.ability;
+			else unit.ability.forEach(ability => { if (ability.ind+1 === $scope.settings.ability) flg = true; });
 			if (!flg) return false;
 		}
 
@@ -214,7 +217,7 @@ app.controller('myController', function($scope,$document,$log,unitData) {
 	}
 
 	function is_platinum(unit) {
-		return (((unit.skills[0].type === 'Unique') || (unit.skills[1].type === 'Unique')) && (unit.name !== 'Trivia'));
+		return ((unit.rarity === 7) && ((unit.skills[0].type === 'Unique') || (unit.skills[1].type === 'Unique') || (unit.name === 'Medal Salix')) && (unit.name !== 'Trivia'));
 	}
 
 	$scope.hsort = function(header) {

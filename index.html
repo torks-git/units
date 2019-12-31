@@ -12,11 +12,16 @@
 	<body>
 		<div ng-app="myApp" ng-controller="myController" ng-init="init()">
 			<div ng-if="settings.loaded" class="animate-if">
-			<div class="search_overlay" ng-style="{'opacity' : settings.overlay ? 1 : 0.3 }">
+			<div ng-show="!settings.overlay" class="search_overlay" ng-style="{'opacity' : settings.overlay ? 1 : 0.35 }">
+				<div  style="padding-top: 0px; float:right;" >
+					<button type="button" ng-click="settings.overlay = !settings.overlay">{{ settings.overlay ? "&gt;&gt;&gt;" : "&lt;&lt;&lt;"}}</button>
+				</div>
+			</div>
+			<div ng-show="settings.overlay" class="search_overlay">
 				<div style="padding-top: 0px; float:right;" >
 					<button type="button" ng-click="settings.overlay = !settings.overlay">{{ settings.overlay ? "&gt;&gt;&gt;" : "&lt;&lt;&lt;"}}</button>
 				</div>
-				<div ng-show="settings.overlay" style="position: relative;">
+				<div style="position: relative;">
 					<div>
 						<b>Ability</b>
 						<ul>
@@ -67,7 +72,12 @@
 						<div style="display:block; margin-left:1em; float:none;">
 							<input type="checkbox" ng-model="settings.showImages"> images
 						</div>
-						<button type="button" ng-click="search()" style="position:relative; left:1.5em; margin-top:1em;">Search</button>
+						<div style="display:block; margin-left:1em; float:none;">
+							<input type="checkbox" ng-model="settings.firstAbility"> First ability
+						</div>
+						<div style="display:block; position:relative; left:1.5em; margin-top:1em; float:none;">
+							<button type="button" ng-click="search()">Search</button>
+						</div>
 					</div>
 					<b style="bottom:15px; right:-25px; position:absolute;">{{::dateString}}</b>
 					<b style="bottom:40px; right:-25px; position:absolute;">{{result.length}}/{{::units.length}}</b>
