@@ -116,7 +116,6 @@ app.controller('myController', function($scope,$document,$log,unitData) {
 			$scope.units.forEach(unit => {
 				unit.src = unit_prefix + unit.name;
 				unit.isrc = img_prefix + ((unit.isrc === '') ? empty_img : (unit.isrc + '/' + unit.name.split(' ').join('_') + '.png'));
-				if (is_platinum(unit)) unit.rarity = 'P' + unit.rarity;
 			});
 
 			$scope.search();
@@ -214,10 +213,6 @@ app.controller('myController', function($scope,$document,$log,unitData) {
 		if (active_evolutions.indexOf(unit.evolutions) === -1) return false;
 
 		return true;
-	}
-
-	function is_platinum(unit) {
-		return ((unit.rarity === 7) && ((unit.skills[0].type === 'Unique') || (unit.skills[1].type === 'Unique') || (unit.name === 'Medal Salix')) && (unit.name !== 'Trivia'));
 	}
 
 	$scope.hsort = function(header) {
