@@ -90,9 +90,11 @@
 							<th ng-repeat="header in ::headers">
 								<div style="display: inline-flex;">
 									<span ng-style="::{'cursor' : header.sort ? 'pointer' : 'auto' }" ng-click="hsort(header)">{{::header.name}}</span>
-									<div ng-if="::header.sort" style="float: left; padding-left: 4px;">
-										<span class="chevron up" ng-click="csort(header.sort,false)"></span>
-										<span class="chevron down" ng-click="csort(header.sort,true)"></span>
+									<span ng-show="header.sort == sort.type1" class="sort">&nbsp;1</span>
+									<span ng-show="header.sort == sort.type2" class="sort">&nbsp;2</span>
+									<div ng-if="::header.sort" style="float: left; padding-left: 4px;">										
+										<span class="chevron up" ng-class="{ 'up-active' : (header.sort == sort.type1 || header.sort == sort.type2 ) && !sort.reverse }" ng-click="csort(header.sort,false)"></span>
+										<span class="chevron down" ng-class="{ 'down-active' : (header.sort == sort.type1 || header.sort == sort.type2 ) && sort.reverse }" ng-click="csort(header.sort,true)"></span>
 									</div>
 								</div>
 							</th>

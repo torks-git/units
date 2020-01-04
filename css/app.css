@@ -103,6 +103,18 @@ a {
 	border-color: black transparent transparent;
 }
 
+.up-active {
+	border-color: transparent transparent darkorange;
+}
+.down-active {
+	border-color: darkorange transparent transparent;
+}
+
+
+.sort {
+	font-size: x-small;
+}
+
 .hide tr > td:nth-child(1) img {
 	display: none;
 }
