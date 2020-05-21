@@ -1,5 +1,5 @@
 {
-"timestamp" : 1590009381000,
+"timestamp" : 15900093810001,
 "units" : [
 {"ability":[{"ind":0,"level":""}],"attack":3690,"element":"Null","evolutions":2,"hp":11280,"isrc":"0/0c","name":"Abaddon","rarity":5,"skills":[{"chance":30,"name":"The Fifth Circle","tags":[],"text":"Fiercely slams all enemies","type":"Multi"},{"chance":15,"name":"Lord of Locusts","tags":[2],"text":"Massively boosts self ATK","type":"Passive"}],"type":"Pound"},
 {"ability":[{"ind":0,"level":""}],"attack":2800,"element":"Water","evolutions":2,"hp":8070,"isrc":"4/4d","name":"Abel","rarity":4,"skills":[{"chance":35,"name":"Frozen Coffin","tags":[],"text":"Strongly slams all enemies","type":"Multi"},{"chance":30,"name":"Mystic Barrier","tags":[9],"text":"Boosts team DEF","type":"Passive"}],"type":"Pound"},
