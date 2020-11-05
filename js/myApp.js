@@ -66,7 +66,7 @@ app.controller('myController', function($scope,$document,$log,unitData) {
 	};
 
 	const unit_prefix = 'http://ishtaria.wikia.com/wiki/';
-	const img_prefix = 'https://vignette.wikia.nocookie.net/age-of-ishtaria/images/';
+	const img_prefix = 'https://static.wikia.nocookie.net/age-of-ishtaria/images/';
 	const empty_img = 'b/b2/Empty-image.png';
 
 	var active_tags = [];
