@@ -31,11 +31,11 @@ app.controller('myController', function($scope,$document,$log,unitData) {
 	$scope.units = [];
 	$scope.tags = [];
 	$scope.abilities = ['*'];
-	$scope.rarity = [1,2,3,4,5,6,7,'P7',8];
+	$scope.rarity = [1,2,3,4,5,6,7,'P7',8,9];
 	$scope.elements = ['Earth','Fire','Water','Null'];
 	$scope.types = ['Flurry','Slice','Pound'];
 	$scope.skill_types = ['Support','Rush','Multi','Multi&Rush','All Atks'];
-	$scope.evolutions = [0,2,4];
+	$scope.evolutions = [0,2,4,7];
 	$scope.result = [];
 	$scope.settings = {
 		ability: 0,
